@@ -1,0 +1,1 @@
+# strafebot-cs2
