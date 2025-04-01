@@ -4,16 +4,12 @@
 #include "constants.h"
 #include <thread>
 #include <chrono>
-#include <Windows.h>
-#include <thread>
 using namespace std;
 
 const string Data::graph_path = "graph.txt";
 
 void test() {
-	Sleep(5000);
-	Mouse m;
-	m.smoothMove(int(90 / 0.055), 0);
+
 }
 
 int main() {
@@ -21,7 +17,7 @@ int main() {
 	//test();
 	//return 0;
 
-	Sleep(7000);
+	std::this_thread::sleep_for(std::chrono::milliseconds(5000));
 
 	Goal goal(Point(-360, 855, -85, vars::GOAL_ID), -90);
 	Controller controller(goal);
@@ -31,7 +27,6 @@ int main() {
 
 	thread rot_thread(&Controller::controlRot, &controller);
 	controller.run();
-	//Sleep(10000);
 
 	rot_thread.join();
 

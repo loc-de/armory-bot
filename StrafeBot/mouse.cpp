@@ -20,17 +20,17 @@ void Mouse::moveOn(int x, int y) const {
     SendInput(1, &input, sizeof(INPUT));
 }
 
-void Mouse::smoothMove(int x, int y) const {
-    int step_x = (int)(x / mouse::STEPS_COUNT);
-    int step_y = (int)(y / mouse::STEPS_COUNT);
-
-    for (int i = 0; i < mouse::STEPS_COUNT; i++) {
-        move(step_x, step_y);
-        Sleep(mouse::DELAY);
-        //Sleep(mouse::DELAY);
-    }
-
-    double rem_x = x % mouse::STEPS_COUNT;
-    double rem_y = y % mouse::STEPS_COUNT;
-    move(rem_x, rem_y);
-}
+//void Mouse::smoothMove(int x, int y) const {
+//    int step_x = (int)(x / mouse::STEPS_COUNT);
+//    int step_y = (int)(y / mouse::STEPS_COUNT);
+//
+//    for (int i = 0; i < mouse::STEPS_COUNT; i++) {
+//        move(step_x, step_y);
+//        Sleep(mouse::DELAY);
+//        //Sleep(mouse::DELAY);
+//    }
+//
+//    double rem_x = x % mouse::STEPS_COUNT;
+//    double rem_y = y % mouse::STEPS_COUNT;
+//    move(rem_x, rem_y);
+//}

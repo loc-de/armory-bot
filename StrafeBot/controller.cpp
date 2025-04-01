@@ -29,8 +29,6 @@ void Controller::testMem() const {
 }
 
 void Controller::run() {
-	_kb.press(key::W);
-
 	while (true) {
 		_bot.update();
 		vector<int> way = findWay();
@@ -43,10 +41,10 @@ void Controller::run() {
 		knife();
 		_kb.press(key::W);
 		move(way);
+		_kb.release(key::W);
 
 		waitDeath();
 	}
-	_kb.release(key::W);
 }
 
 void Controller::move(const vector<int>& way) {
@@ -60,34 +58,23 @@ void Controller::move(const vector<int>& way) {
 
 	moveToPoint(_goal.pos(), last_z);
 
-	_bot.update();
-	//double angle = _bot.ang() - _goal.ang();
 	_trg_ang = _goal.ang();
-	//_mouse.move((int)(angle / 0.055), 0);
 }
 
 void Controller::moveToPoint(const Point& p, double last_z) {
 	while (!_bot.inRange(p)) {
 		_bot.update();
-
 		_trg_ang = _bot.pos().angleTo(p);
-
-		//if (-7 > angle || angle > 7) {
-		//	_mouse.move((int)(angle / 0.055), 0);
-		//}
 
 		if (p.z() < last_z) {
 			jump();
-			//Sleep(100);
 		}
 
-		Sleep(10);
+		std::this_thread::sleep_for(std::chrono::milliseconds(10));
 	}
 }
 
 void Controller::controlRot() {
-	constexpr double ROTATION_SPEED = 90.0 / 150;
-
 	while (true) {
 		_bot.update();
 
@@ -97,26 +84,16 @@ void Controller::controlRot() {
 		if (angle < -180)
 			angle += 360;
 
-		//if (std::abs(angle) < 3) {
-		//	std::this_thread::sleep_for(std::chrono::milliseconds(vars::UPDATE_RATE_MS));
-		//	continue;
-		//}
-
-		double max_step = ROTATION_SPEED * vars::UPDATE_RATE_MS;
-
 		double speed_factor = std::abs(angle) < 20 ? 0.5 : 1.5;
-		max_step *= speed_factor;
+		double max_step = rot::MAX_ANG_PER_STEP * speed_factor;
 
-		//double step = std::clamp(_trg_ang, -max_step, max_step);
 		double step = (angle < -max_step) ? -max_step : (angle > max_step) ? max_step : angle;
 
-		int move_pixels = static_cast<int>(step / vars::DEG_PER_PIXEL);
-		//cout << move_pixels << endl;
-		if (move_pixels != 0) {
+		int move_pixels = (int)(step / rot::ANG_PER_PIXEL);
+		if (move_pixels != 0)
 			_mouse.move(move_pixels, 0);
-		}
 
-		std::this_thread::sleep_for(std::chrono::milliseconds(vars::UPDATE_RATE_MS));
+		std::this_thread::sleep_for(std::chrono::milliseconds(rot::UPDATE_RATE_MS));
 	}
 }
 
@@ -145,9 +122,7 @@ vector<int> Controller::findWay() {
 
 void Controller::waitDeath() {
 	while (_bot.inRange(_goal.pos())) {
-		Sleep(400);
-		_bot.update();
-		cout << "wait death" << endl;
+		std::this_thread::sleep_for(std::chrono::milliseconds(400));
 	}
 }
 
