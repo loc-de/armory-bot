@@ -15,6 +15,8 @@ public:
 	Graph() = default;
 	~Graph() = default;
 
+	const map<int, vector<int>>& adj() const;
+
 	void addVertex(int);
 	void addEdge(int, int);
 	vector<int> pathTo(int, int) const;

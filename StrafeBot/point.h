@@ -29,8 +29,7 @@ public:
 
 	double distanceTo(const Point& p) const;
 	double angleTo(const Point&) const;
+	Point projectionOnEdge(const Point&, const Point&) const;
 };
 
 ostream& operator<<(ostream&, const Point&);
-
-//bool operator<(const Point&, const Point&);

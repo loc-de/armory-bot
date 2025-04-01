@@ -17,7 +17,7 @@ int main() {
 	//test();
 	//return 0;
 
-	std::this_thread::sleep_for(std::chrono::milliseconds(5000));
+	this_thread::sleep_for(chrono::milliseconds(5000));
 
 	Goal goal(Point(-360, 855, -85, vars::GOAL_ID), -90);
 	Controller controller(goal);

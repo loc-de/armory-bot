@@ -4,6 +4,10 @@
 #include <iostream>
 using namespace std;
 
+const map<int, vector<int>>& Graph::adj() const {
+	return _adj;
+}
+
 void Graph::addVertex(int id) {
 	if (_adj.find(id) == _adj.end()) {
 		_adj[id] = {};

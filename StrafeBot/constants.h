@@ -6,10 +6,10 @@
 using namespace std;
 
 namespace offsets {
-	constexpr uintptr_t X = 0x1987850;
-	constexpr uintptr_t Y = 0x1987854;
-	constexpr uintptr_t Z = 0x1987858;
-	constexpr uintptr_t ROT = 0x1AAE884;
+	constexpr uintptr_t X = 0x196E700;
+	constexpr uintptr_t Y = 0x196E704;
+	constexpr uintptr_t Z = 0x196E6A8;
+	constexpr uintptr_t ROT = 0x1A932E4;
 }
 
 namespace vars {

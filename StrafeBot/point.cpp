@@ -85,22 +85,29 @@ double Point::angleTo(const Point& p) const {
 	return atan2(_y - p.y(), _x - p.x()) * 180 / M_PI + 180;
 }
 
+Point Point::projectionOnEdge(const Point& p1, const Point& p2) const {
+	double A = p1.y() - p2.y();
+	double B = p2.x() - p1.x();
+	double C = p1.x() * p2.y() - p2.x() * p1.y();
+
+	double x_proj = (B * (B * _x - A * _y) - A * C) / (A * A + B * B);
+	double y_proj = (A * (-B * _x + A * _y) - B * C) / (A * A + B * B);
+
+	if (x_proj >= min(p1.x(), p2.x()) && x_proj <= max(p1.x(), p2.x()) &&
+		y_proj >= min(p1.y(), p2.y()) && y_proj <= max(p1.y(), p2.y())) {
+		return { x_proj, y_proj };
+	}
+	else {
+		double distB = hypot(_x - p1.x(), _y - p1.y());
+		double distC = hypot(_x - p2.x(), _y - p2.y());
+
+		if (distB < distC)
+			return { p1.x(), p1.y()};
+		else
+			return { p2.x(), p2.y()};
+	}
+}
+
 ostream& operator<<(ostream& os, const Point& p) {
 	return os << '(' << p.x() << ", " << p.y() << ", " << p.z() << ')';
 }
-
-//bool operator<(const Point& p1, const Point& p2) {
-//	if (p1.x() != p2.x())
-//		return p1.x() < p2.x();
-//	if (p1.y() != p2.y())
-//		return p1.y() < p2.y();
-//	return p1.z() < p2.z();
-//}
-
-//bool operator<(const Point& p1, const Point& p2) {
-//	if (p1.x() != p2.x())
-//		return p1.x() < p2.x();
-//	if (p1.y() != p2.y())
-//		return p1.y() < p2.y();
-//	return p1.z() < p2.z();
-//}

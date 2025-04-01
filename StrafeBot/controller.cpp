@@ -70,7 +70,7 @@ void Controller::moveToPoint(const Point& p, double last_z) {
 			jump();
 		}
 
-		std::this_thread::sleep_for(std::chrono::milliseconds(10));
+		this_thread::sleep_for(chrono::milliseconds(10));
 	}
 }
 
@@ -84,7 +84,7 @@ void Controller::controlRot() {
 		if (angle < -180)
 			angle += 360;
 
-		double speed_factor = std::abs(angle) < 20 ? 0.5 : 1.5;
+		double speed_factor = abs(angle) < 20 ? 0.5 : 1.5;
 		double max_step = rot::MAX_ANG_PER_STEP * speed_factor;
 
 		double step = (angle < -max_step) ? -max_step : (angle > max_step) ? max_step : angle;
@@ -93,26 +93,30 @@ void Controller::controlRot() {
 		if (move_pixels != 0)
 			_mouse.move(move_pixels, 0);
 
-		std::this_thread::sleep_for(std::chrono::milliseconds(rot::UPDATE_RATE_MS));
+		this_thread::sleep_for(chrono::milliseconds(rot::UPDATE_RATE_MS));
 	}
 }
 
 int Controller::nearest(const Point& p) const {
-	int n_id = -1;
+	int a_n_id = -1;
+	int b_n_id = -1;
 	double n_dis = (std::numeric_limits<double>::max)();
-	for (const auto& i_p : _data.points()) {
-		//cout << i_p.first << endl;
-		double dis = p.distanceTo(i_p.second);
-		//cout << endl;
-		//cout << dis << endl << endl;
-		if (dis < n_dis) {
-			n_dis = dis;
-			n_id = i_p.first;
+
+	for (const auto item : _data.graph().adj()) {
+		for (const int id : item.second) {
+			if (_data.points().at(id).z() != _data.points().at(item.first).z())
+				continue;
+
+			Point proj_p = p.projectionOnEdge(_data.points().at(item.first), _data.points().at(id));
+			double dis = p.distanceTo(proj_p);
+			if (dis < n_dis) {
+				n_dis = dis;
+				a_n_id = item.first;
+				b_n_id = id;
+			}
 		}
 	}
-	if (n_id == -1)
-		throw runtime_error("cant found nearest point");
-	return n_id;
+	return p.distanceTo(_data.points().at(a_n_id)) < p.distanceTo(_data.points().at(b_n_id)) ? a_n_id : b_n_id;
 }
 
 vector<int> Controller::findWay() {
@@ -122,7 +126,7 @@ vector<int> Controller::findWay() {
 
 void Controller::waitDeath() {
 	while (_bot.inRange(_goal.pos())) {
-		std::this_thread::sleep_for(std::chrono::milliseconds(400));
+		this_thread::sleep_for(chrono::milliseconds(400));
 	}
 }
 
