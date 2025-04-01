@@ -4,6 +4,8 @@
 #include <exception>
 #include <Windows.h>
 #include <chrono>
+#include <thread>
+#include <algorithm>
 
 Controller::Controller(const Goal& goal) : 
 	_data(Data()), _bot(Player()), _goal(goal), _mouse(Mouse()), _kb(Keybd()), _trg_ang(0)
@@ -59,39 +61,62 @@ void Controller::move(const vector<int>& way) {
 	moveToPoint(_goal.pos(), last_z);
 
 	_bot.update();
-	double angle = _bot.ang() - _goal.ang();
-	_mouse.move((int)(angle / 0.055), 0);
+	//double angle = _bot.ang() - _goal.ang();
+	_trg_ang = _goal.ang();
+	//_mouse.move((int)(angle / 0.055), 0);
 }
 
 void Controller::moveToPoint(const Point& p, double last_z) {
 	while (!_bot.inRange(p)) {
 		_bot.update();
 
-		double angle = _bot.ang() - _bot.pos().angleTo(p);
-		if (angle > 180)
-			angle -= 360;
-		if (angle < -180)
-			angle += 360;
+		_trg_ang = _bot.pos().angleTo(p);
 
-		if (-7 > angle || angle > 7) {
-			_mouse.move((int)(angle / 0.055), 0);
-		}
+		//if (-7 > angle || angle > 7) {
+		//	_mouse.move((int)(angle / 0.055), 0);
+		//}
 
-		if (p.z() < last_z)
+		if (p.z() < last_z) {
 			jump();
+			//Sleep(100);
+		}
 
 		Sleep(10);
 	}
 }
 
 void Controller::controlRot() {
+	constexpr double ROTATION_SPEED = 90.0 / 150;
+
 	while (true) {
+		_bot.update();
 
+		double angle = _bot.ang() - _trg_ang;
+		if (angle > 180)
+			angle -= 360;
+		if (angle < -180)
+			angle += 360;
 
-		//Sleep(100);
-		//_mouse.smoothMove(109, 0);
-		//Sleep(100);
-		//_mouse.smoothMove(-109, 0);
+		//if (std::abs(angle) < 3) {
+		//	std::this_thread::sleep_for(std::chrono::milliseconds(vars::UPDATE_RATE_MS));
+		//	continue;
+		//}
+
+		double max_step = ROTATION_SPEED * vars::UPDATE_RATE_MS;
+
+		double speed_factor = std::abs(angle) < 20 ? 0.5 : 1.5;
+		max_step *= speed_factor;
+
+		//double step = std::clamp(_trg_ang, -max_step, max_step);
+		double step = (angle < -max_step) ? -max_step : (angle > max_step) ? max_step : angle;
+
+		int move_pixels = static_cast<int>(step / vars::DEG_PER_PIXEL);
+		//cout << move_pixels << endl;
+		if (move_pixels != 0) {
+			_mouse.move(move_pixels, 0);
+		}
+
+		std::this_thread::sleep_for(std::chrono::milliseconds(vars::UPDATE_RATE_MS));
 	}
 }
 

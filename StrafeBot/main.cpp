@@ -29,11 +29,11 @@ int main() {
 	//controller.testMem();
 	//return 0;
 
-	thread rotThread(&Controller::autoRot, &controller);
+	thread rot_thread(&Controller::controlRot, &controller);
 	controller.run();
 	//Sleep(10000);
 
-	rotThread.join();
+	rot_thread.join();
 
 	return 0;
 }
