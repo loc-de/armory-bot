@@ -14,12 +14,16 @@ namespace offsets {
 
 namespace vars {
 	constexpr int GOAL_ID = 10010;
-	constexpr double RANGE_RADIUS = 40;
+	constexpr double RANGE_RADIUS = 50;
+	constexpr double ROT_FACTOR = 0.055;
+
+	constexpr double DEG_PER_PIXEL = 0.055; // —к≥льки градус≥в за п≥ксель
+	constexpr int UPDATE_RATE_MS = 5; // „ас м≥ж оновленн€ми (мс)
 }
 
 namespace mouse {
 	constexpr int STEPS_COUNT = 20;
-	constexpr double DELAY = 15;
+	constexpr double DELAY = 10;
 }
 
 namespace key {
