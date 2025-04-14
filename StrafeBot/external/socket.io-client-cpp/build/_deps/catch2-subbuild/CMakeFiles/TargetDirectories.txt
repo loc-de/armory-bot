@@ -1,3 +1,0 @@
-D:/Projects/C++/strafebot-cs2/StrafeBot/external/socket.io-client-cpp/build/_deps/catch2-subbuild/CMakeFiles/catch2-populate.dir
-D:/Projects/C++/strafebot-cs2/StrafeBot/external/socket.io-client-cpp/build/_deps/catch2-subbuild/CMakeFiles/ALL_BUILD.dir
-D:/Projects/C++/strafebot-cs2/StrafeBot/external/socket.io-client-cpp/build/_deps/catch2-subbuild/CMakeFiles/ZERO_CHECK.dir
