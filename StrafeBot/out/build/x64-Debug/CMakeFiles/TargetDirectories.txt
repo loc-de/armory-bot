@@ -1,0 +1,13 @@
+D:/Projects/C++/strafebot-cs2/StrafeBot/out/build/x64-Debug/CMakeFiles/StrafeBot.dir
+D:/Projects/C++/strafebot-cs2/StrafeBot/out/build/x64-Debug/CMakeFiles/edit_cache.dir
+D:/Projects/C++/strafebot-cs2/StrafeBot/out/build/x64-Debug/CMakeFiles/rebuild_cache.dir
+D:/Projects/C++/strafebot-cs2/StrafeBot/out/build/x64-Debug/CMakeFiles/list_install_components.dir
+D:/Projects/C++/strafebot-cs2/StrafeBot/out/build/x64-Debug/CMakeFiles/install.dir
+D:/Projects/C++/strafebot-cs2/StrafeBot/out/build/x64-Debug/CMakeFiles/install/local.dir
+D:/Projects/C++/strafebot-cs2/StrafeBot/out/build/x64-Debug/external/socket.io-client-cpp/CMakeFiles/sioclient.dir
+D:/Projects/C++/strafebot-cs2/StrafeBot/out/build/x64-Debug/external/socket.io-client-cpp/CMakeFiles/sioclient_tls.dir
+D:/Projects/C++/strafebot-cs2/StrafeBot/out/build/x64-Debug/external/socket.io-client-cpp/CMakeFiles/edit_cache.dir
+D:/Projects/C++/strafebot-cs2/StrafeBot/out/build/x64-Debug/external/socket.io-client-cpp/CMakeFiles/rebuild_cache.dir
+D:/Projects/C++/strafebot-cs2/StrafeBot/out/build/x64-Debug/external/socket.io-client-cpp/CMakeFiles/list_install_components.dir
+D:/Projects/C++/strafebot-cs2/StrafeBot/out/build/x64-Debug/external/socket.io-client-cpp/CMakeFiles/install.dir
+D:/Projects/C++/strafebot-cs2/StrafeBot/out/build/x64-Debug/external/socket.io-client-cpp/CMakeFiles/install/local.dir

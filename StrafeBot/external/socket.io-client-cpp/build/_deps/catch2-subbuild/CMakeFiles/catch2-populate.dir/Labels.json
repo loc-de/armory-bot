@@ -1,0 +1,46 @@
+{
+	"sources" : 
+	[
+		{
+			"file" : "D:/Projects/C++/strafebot-cs2/StrafeBot/external/socket.io-client-cpp/build/_deps/catch2-subbuild/CMakeFiles/catch2-populate"
+		},
+		{
+			"file" : "D:/Projects/C++/strafebot-cs2/StrafeBot/external/socket.io-client-cpp/build/_deps/catch2-subbuild/CMakeFiles/68a4875a8dfe09b17460313d0f107eda/catch2-populate.rule"
+		},
+		{
+			"file" : "D:/Projects/C++/strafebot-cs2/StrafeBot/external/socket.io-client-cpp/build/_deps/catch2-subbuild/CMakeFiles/6d7b58f2aad392c6ef73716cf98d7d45/catch2-populate-complete.rule"
+		},
+		{
+			"file" : "D:/Projects/C++/strafebot-cs2/StrafeBot/external/socket.io-client-cpp/build/_deps/catch2-subbuild/CMakeFiles/139d2ee3c919494b5b3db82e64b6853e/catch2-populate-build.rule"
+		},
+		{
+			"file" : "D:/Projects/C++/strafebot-cs2/StrafeBot/external/socket.io-client-cpp/build/_deps/catch2-subbuild/CMakeFiles/139d2ee3c919494b5b3db82e64b6853e/catch2-populate-configure.rule"
+		},
+		{
+			"file" : "D:/Projects/C++/strafebot-cs2/StrafeBot/external/socket.io-client-cpp/build/_deps/catch2-subbuild/CMakeFiles/139d2ee3c919494b5b3db82e64b6853e/catch2-populate-download.rule"
+		},
+		{
+			"file" : "D:/Projects/C++/strafebot-cs2/StrafeBot/external/socket.io-client-cpp/build/_deps/catch2-subbuild/CMakeFiles/139d2ee3c919494b5b3db82e64b6853e/catch2-populate-install.rule"
+		},
+		{
+			"file" : "D:/Projects/C++/strafebot-cs2/StrafeBot/external/socket.io-client-cpp/build/_deps/catch2-subbuild/CMakeFiles/139d2ee3c919494b5b3db82e64b6853e/catch2-populate-mkdir.rule"
+		},
+		{
+			"file" : "D:/Projects/C++/strafebot-cs2/StrafeBot/external/socket.io-client-cpp/build/_deps/catch2-subbuild/CMakeFiles/139d2ee3c919494b5b3db82e64b6853e/catch2-populate-patch.rule"
+		},
+		{
+			"file" : "D:/Projects/C++/strafebot-cs2/StrafeBot/external/socket.io-client-cpp/build/_deps/catch2-subbuild/CMakeFiles/139d2ee3c919494b5b3db82e64b6853e/catch2-populate-test.rule"
+		},
+		{
+			"file" : "D:/Projects/C++/strafebot-cs2/StrafeBot/external/socket.io-client-cpp/build/_deps/catch2-subbuild/CMakeFiles/139d2ee3c919494b5b3db82e64b6853e/catch2-populate-update.rule"
+		}
+	],
+	"target" : 
+	{
+		"labels" : 
+		[
+			"catch2-populate"
+		],
+		"name" : "catch2-populate"
+	}
+}
