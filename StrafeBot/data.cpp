@@ -56,7 +56,6 @@ const Path& Data::path(const int s_id, const int e_id) {
 	if (_paths.find(s_id) != _paths.end())
 		return _paths[s_id];
 
-	cout << "new path" << endl;
 	_paths[s_id] = _graph.pathTo(s_id, e_id);;
 	return _paths[s_id];
 }

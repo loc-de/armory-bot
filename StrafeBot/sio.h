@@ -2,18 +2,19 @@
 #include <sio_client.h>
 #include <mutex>
 #include <condition_variable>
+using namespace std;
 
 class SioClient {
 public:
     SioClient();
-    void connect(const std::string& uri);
+    void connect(const string& uri);
     void send_command();
 
 private:
     sio::client _socket_client;
-    std::mutex _mtx;
-    std::condition_variable _cv;
-    bool _command_confirmed = false;
+    mutex _mtx;
+    condition_variable _cv;
+    bool _connected;
 
     void on_connected();
     void on_command_completed(const sio::message::ptr& data);

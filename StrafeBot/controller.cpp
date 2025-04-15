@@ -45,7 +45,7 @@ void Controller::run() {
 
 	while (true) {
 		Path path = findWay();
-		cout << path << endl;
+		cout << "Path: " << path << endl;
 		
 		knife();
 		_kb.press(key::W);
@@ -76,6 +76,7 @@ void Controller::moveToPoint(const Point& p) {
 	//Point last_p = _bot.pos();
 	//size_t time = 0;
 
+	_kb.press(key::W);
 	while (!_bot.inRange(p, vars::ARRIVAL_RADIUS)) {
 		//if (time >= 500) {
 		//	if (_bot.inRange(last_p, vars::MOVE_RADIUS)) {
@@ -125,7 +126,7 @@ void Controller::controlJump() {
 
 		this_thread::sleep_for(chrono::milliseconds(50));
 		jump();
-		this_thread::sleep_for(chrono::milliseconds(1000));
+		this_thread::sleep_for(chrono::seconds(1));
 	}
 }
 

@@ -12,6 +12,8 @@ int main() {
 	//controller.testMem();
 	//return 0;
 	
+	this_thread::sleep_for(chrono::seconds(1));
+
 	string s;
 	while (s != "y") {
 		cout << "on server? (y/n): ";
@@ -19,7 +21,7 @@ int main() {
 	}
 
 	controller.activateWindow();
-	this_thread::sleep_for(chrono::milliseconds(3000));
+	this_thread::sleep_for(chrono::seconds(3));
 	controller.run();
 
 	return 0;

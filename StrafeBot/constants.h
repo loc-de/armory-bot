@@ -13,7 +13,6 @@ namespace offsets {
 }
 
 namespace vars {
-	//const string graph_path = "D:/Projects/C++/strafebot-cs2/StrafeBot/src/graph.txt";
 	const string SERVER_URL = "http://13.50.171.67:19410";
 	const string graph_path = "graph.txt";
 	constexpr double ARRIVAL_RADIUS = 50;
