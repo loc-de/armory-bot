@@ -17,7 +17,7 @@ namespace vars {
 	const string graph_path = "graph.txt";
 	constexpr double ARRIVAL_RADIUS = 50;
 	constexpr double JUMP_RADIUS = 100;
-	//constexpr double STUCK_RADIUS = 250;
+	constexpr double STUCK_RADIUS = 15;
 	//constexpr double MOVE_RADIUS = 500;
 	constexpr double HEIGHT_RANGE = 60;
 	constexpr int UPDATE_RATE_MS = 5;

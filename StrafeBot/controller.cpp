@@ -9,8 +9,7 @@
 
 Controller::Controller(const Goal& goal) : 
 	_data(), _bot(), _goal(goal), _mouse(), 
-	_kb(), _sio_client(), _trg_ang(0), _trg_mp_id(-1), _src_mp_id(-1),
-	_is_stuck(false)
+	_kb(), _sio_client(), _trg_ang(0), _trg_mp_id(-1), _src_mp_id(-1)
 {
 	_data.load();
 	_goal.n_id() = nearestMP(_goal.p());
@@ -41,64 +40,61 @@ void Controller::run() {
 	_rot_t = make_unique<thread>(&Controller::controlRot, this);
 	_jump_t = make_unique<thread>(&Controller::controlJump, this);
 
-	this_thread::sleep_for(chrono::milliseconds(100));
-
 	while (true) {
+		this_thread::sleep_for(chrono::milliseconds(100));
+
 		Path path = findWay();
 		cout << "Path: " << path << endl;
 		
 		knife();
 		_kb.press(key::W);
-		move(path);
-		_kb.release(key::W);
+		
+		if (!move(path)) {
+			_kb.release(key::W);
+			continue;
+		}
 
 		_sio_client.send_command();
+		_kb.release(key::W);
 		waitDeath();
 	}
 }
 
-void Controller::move(const Path& path) {
+bool Controller::move(const Path& path) {
 	_trg_mp_id = path.path[0];
 	_src_mp_id = path.path[0];
 
 	for (const int id : path.path) {
 		_trg_mp_id = id;
-		moveToPoint(_data.mapPoint(id).p());
+		if (!moveToPoint(_data.mapPoint(id).p()))
+			return false;
 		_src_mp_id = id;
 	}
 
-	moveToPoint(_goal.p());
+	if (!moveToPoint(_goal.p()))
+		return false;
 
 	_trg_ang = _goal.ang();
+	return true;
 }
 
-void Controller::moveToPoint(const Point& p) {
-	//Point last_p = _bot.pos();
-	//size_t time = 0;
+bool Controller::moveToPoint(const Point& p) {
+	Point last_p = _bot.pos();
 
 	_kb.press(key::W);
 	while (!_bot.inRange(p, vars::ARRIVAL_RADIUS)) {
-		//if (time >= 500) {
-		//	if (_bot.inRange(last_p, vars::MOVE_RADIUS)) {
-		//		_is_stuck = false;
-		//		last_p = _bot.pos();
-		//	}
-		//	else {
-		//		_is_stuck = true;
-		//	}
-		//	time = 0;
-		//}
+		if (!_bot.inRange(last_p, vars::STUCK_RADIUS))
+			return false;
 
+		last_p = _bot.pos();
 		_trg_ang = _bot.pos().angleTo(p);
 		this_thread::sleep_for(chrono::milliseconds(vars::UPDATE_RATE_MS));
-		//time += vars::UPDATE_RATE_MS;
 	}
+	return true;
 }
 
 void Controller::controlJump() {
 	while (true) {
-		//cout << "_is_stuck: " << boolalpha << _is_stuck << endl;
-
 		if (_trg_mp_id == -1 || _src_mp_id == -1 || _trg_mp_id == _src_mp_id) {
 			this_thread::sleep_for(chrono::milliseconds(vars::UPDATE_RATE_MS));
 			continue;

@@ -19,10 +19,9 @@ private:
 	double _trg_ang;
 	int _trg_mp_id;
 	int _src_mp_id;
-	bool _is_stuck;
 
-	void move(const Path&);
-	void moveToPoint(const Point&);
+	bool move(const Path&);
+	bool moveToPoint(const Point&);
 	void controlJump();
 	void controlRot();
 	vector<int> nearestVecMP(const Point&) const;

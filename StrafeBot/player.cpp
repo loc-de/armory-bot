@@ -21,7 +21,7 @@ void Player::update() {
 }
 
 bool Player::inRange(const Point& p, const double r) const {
-	if (_pos.distanceTo(p) >= r)
+	if (_pos.distanceTo(p) >= r) 
 		return false;
 	return true;
 }
