@@ -4,12 +4,13 @@
 #include <map>
 #include <algorithm>
 #include "constants.h"
+#include "config.h"
 
 using namespace std;
 
 void Data::load() {
 	fstream file;
-	file.open(vars::graph_path, fstream::in);
+	file.open(Config::get().graph_path, fstream::in);
 	
 	string line;
 	map<int, vector<int>> mp_ns;
@@ -37,7 +38,6 @@ void Data::load() {
 				_graph.addEdge(ns.first, id, mapPoint(ns.first).p().distanceTo(mapPoint(id).p()));
 		}
 	}
-		
 }
 
 const Graph& Data::graph() const {

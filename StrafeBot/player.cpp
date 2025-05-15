@@ -1,6 +1,7 @@
 #include "player.h"
 #include "constants.h"
 #include <cmath>
+#include "config.h"
 
 Player::Player() :
 	_pos(Point()), _ang(0), _memory(Memory()) {}
@@ -14,10 +15,10 @@ const float Player::ang() const {
 }
 
 void Player::update() {
-	_pos.x() = _memory.memRead<float>(offsets::X);
-	_pos.y() = _memory.memRead<float>(offsets::Y);
-	_pos.z() = _memory.memRead<float>(offsets::Z);
-	_ang = _memory.memRead<float>(offsets::ROT);
+	_pos.x() = _memory.memRead<float>(Config::get().offsets.X);
+	_pos.y() = _memory.memRead<float>(Config::get().offsets.Y);
+	_pos.z() = _memory.memRead<float>(Config::get().offsets.Z);
+	_ang = _memory.memRead<float>(Config::get().offsets.ROT);
 }
 
 bool Player::inRange(const Point& p, const double r) const {

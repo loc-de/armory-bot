@@ -1,6 +1,8 @@
 #include "keyboard.h"
 #include <iostream>
 #include <Windows.h>
+#include <thread>
+#include <chrono>
 
 void Keybd::press(const std::uintptr_t key) const {
 	keybd_event(static_cast<BYTE>(key), 0, 0, 0);

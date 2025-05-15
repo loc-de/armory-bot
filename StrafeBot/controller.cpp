@@ -6,14 +6,43 @@
 #include <chrono>
 #include <thread>
 #include <algorithm>
+#include "config.h"
 
 Controller::Controller(const Goal& goal) : 
-	_data(), _bot(), _goal(goal), _mouse(), 
-	_kb(), _sio_client(), _trg_ang(0), _trg_mp_id(-1), _src_mp_id(-1)
+	_data{}, _bot{}, _goal(goal), _mouse{},
+	_kb{}, _sio_client{}, _trg_ang(0), _trg_mp_id(-1), _src_mp_id(-1)
 {
 	_data.load();
 	_goal.n_id() = nearestMP(_goal.p());
-	_sio_client.connect(vars::SERVER_URL);
+}
+
+void Controller::connectToServer() {
+	_sio_client.connect(Config::get().server_url);
+}
+
+void Controller::setSens() const {
+	_kb.send(key::BACKTICK);
+	this_thread::sleep_for(chrono::milliseconds(100));
+	_kb.send(key::ENTER);
+
+	_kb.send(key::S);
+	_kb.send(key::E);
+	_kb.send(key::N);
+	_kb.send(key::S);
+	_kb.send(key::I);
+	_kb.send(key::T);
+	_kb.send(key::I);
+	_kb.send(key::V);
+	_kb.send(key::I);
+	_kb.send(key::T);
+	_kb.send(key::Y);
+	_kb.send(key::SPACE);
+	_kb.send(key::NUM_2);
+	_kb.send(key::DOT);
+	_kb.send(key::NUM_5);
+
+	_kb.send(key::ENTER);
+	_kb.send(key::BACKTICK);
 }
 
 void Controller::testMem() {
@@ -37,26 +66,33 @@ void Controller::activateWindow() const {
 }
 
 void Controller::run() {
+	setSens();
 	_rot_t = make_unique<thread>(&Controller::controlRot, this);
 	_jump_t = make_unique<thread>(&Controller::controlJump, this);
 
 	while (true) {
-		this_thread::sleep_for(chrono::milliseconds(100));
+		try {
+			this_thread::sleep_for(chrono::milliseconds(100));
 
-		Path path = findWay();
-		cout << "Path: " << path << endl;
-		
-		knife();
-		_kb.press(key::W);
-		
-		if (!move(path)) {
-			_kb.release(key::W);
+			Path path = findWay();
+			cout << "Path: " << path << endl;
+
+			knife();
+			_kb.press(key::W);
+
+			if (!move(path)) {
+				_kb.release(key::W);
+				continue;
+			}
+
+			_sio_client.send_command(true);
+			waitDeath();
+			_sio_client.send_command(false);
+		}
+		catch (const exception& ex) {
+			cout << ex.what() << endl;
 			continue;
 		}
-
-		_sio_client.send_command();
-		_kb.release(key::W);
-		waitDeath();
 	}
 }
 
@@ -66,31 +102,76 @@ bool Controller::move(const Path& path) {
 
 	for (const int id : path.path) {
 		_trg_mp_id = id;
-		if (!moveToPoint(_data.mapPoint(id).p()))
+		if (!moveToPoint(_data.mapPoint(id).p(), false))
 			return false;
 		_src_mp_id = id;
 	}
 
-	if (!moveToPoint(_goal.p()))
+	if (!moveToPoint(_goal.p(), true))
 		return false;
 
 	_trg_ang = _goal.ang();
 	return true;
 }
 
-bool Controller::moveToPoint(const Point& p) {
+bool Controller::moveToPoint(const Point& p, bool f) {
 	Point last_p = _bot.pos();
+	size_t time = 0;
+
+	bool triedRight = false;
+	bool triedLeft = false;
+	atomic<bool> bypassing = false;
 
 	_kb.press(key::W);
-	while (!_bot.inRange(p, vars::ARRIVAL_RADIUS)) {
-		if (!_bot.inRange(last_p, vars::STUCK_RADIUS))
-			return false;
 
-		last_p = _bot.pos();
+	while (!_bot.inRange(p, (f ? vars::ARRIVAL_GOAL_RADIUS : vars::ARRIVAL_RADIUS))) {
+		if (!_bot.inRange(last_p, vars::STUCK_RADIUS)) {
+			_kb.release(key::W);
+			return false;
+		}
+
 		_trg_ang = _bot.pos().angleTo(p);
 		this_thread::sleep_for(chrono::milliseconds(vars::UPDATE_RATE_MS));
+		time += vars::UPDATE_RATE_MS;
+
+		if (time >= 500 && _bot.pos().isSame(last_p) && !bypassing) {
+			if (!triedRight) {
+				bypassing = true;
+				triedRight = true;
+				cout << "move R" << endl;
+				thread(&Controller::bypassAFK, this, 'R', ref(bypassing)).detach();
+				time = 0;
+				continue;
+			}
+			if (!triedLeft) {
+				bypassing = true;
+				triedLeft = true;
+				cout << "move L" << endl;
+				thread(&Controller::bypassAFK, this, 'L', ref(bypassing)).detach();
+				time = 0;
+				continue;
+			}
+			_kb.release(key::W);
+			return false;
+		}
+
+		if (!_bot.pos().isSame(last_p))
+			time = 0;
+		last_p = _bot.pos();
 	}
+
+	_kb.release(key::W);
 	return true;
+}
+
+void Controller::bypassAFK(char dir, std::atomic<bool>& bypassing) {
+	uintptr_t key = ((dir == 'R') ? key::D : key::A);
+
+	_kb.press(key);
+	this_thread::sleep_for(chrono::milliseconds(500));
+	_kb.release(key);
+
+	bypassing = false;
 }
 
 void Controller::controlJump() {

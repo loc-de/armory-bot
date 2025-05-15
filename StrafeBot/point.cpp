@@ -3,6 +3,7 @@
 #include "point.h"
 #include <iostream>
 #include <cmath>
+#include "constants.h"
 using namespace std;
 
 Point::Point(float x, float y, float z)
@@ -77,6 +78,10 @@ Point Point::projectionOnEdge(const Point& p1, const Point& p2) const {
 		else
 			return { p2.x(), p2.y()};
 	}
+}
+
+bool Point::isSame(const Point& p) const {
+	return this->distanceTo(p) < vars::SMALL_MOVE_DIST;
 }
 
 ostream& operator<<(ostream& os, const Point& p) {

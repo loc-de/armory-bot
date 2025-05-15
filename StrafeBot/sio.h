@@ -8,7 +8,7 @@ class SioClient {
 public:
     SioClient();
     void connect(const string& uri);
-    void send_command();
+    void send_command(const bool on_pos);
 
 private:
     sio::client _socket_client;

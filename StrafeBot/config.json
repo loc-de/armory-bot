@@ -1,0 +1,10 @@
+{
+  "offsets": {
+    "X": "0x1A61680",
+    "Y": "0x1A61684",
+    "Z": "0x1A61688",
+    "ROT": "0x1A6B2E4"
+  },
+    "server_url": "http://13.50.171.67:19410",
+    "graph_path": "graph.txt"
+}

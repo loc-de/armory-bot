@@ -21,7 +21,8 @@ private:
 	int _src_mp_id;
 
 	bool move(const Path&);
-	bool moveToPoint(const Point&);
+	bool moveToPoint(const Point&, bool);
+	void bypassAFK(char, std::atomic<bool>&);
 	void controlJump();
 	void controlRot();
 	vector<int> nearestVecMP(const Point&) const;
@@ -30,10 +31,12 @@ private:
 	void waitDeath();
 	void knife();
 	void jump();
+	void setSens() const;
 
 public:
 	Controller(const Goal&);
 
+	void connectToServer();
 	void testMem();
 	void activateWindow() const;
 	void run();
